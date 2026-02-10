@@ -4,6 +4,33 @@ LinkedList<T>::LinkedList()
 : head(nullptr) { }
 
 template <typename T>
+LinkedList<T>::LinkedList(const LinkedList<T>& other)
+: head(nullptr) {
+    this->length = 0;
+    typename LinkedList<T>::Node* curr = other.head;
+    while (curr != nullptr) {
+        append(curr->value);
+        curr = curr->next;
+    }
+}
+
+template <typename T>
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    clear();
+    typename LinkedList<T>::Node* curr = other.head;
+    while (curr != nullptr) {
+        append(curr->value);
+        curr = curr->next;
+    }
+
+    return *this;
+}
+
+template <typename T>
 LinkedList<T>::~LinkedList() {
     clear();
 }

@@ -1,23 +1,26 @@
 #include <iostream>
 #include <string>
 #include "Student.hpp"
-#include "Course.hpp"
 // TO DO:
 // If you want to use the LinkedList code you wrote in Week 4 Mon Lab for creating list
 // include LinkedList.hpp here and also add it both LinkedList.hpp and LinkedList.tpp to this repository.
-#include "LinkedList.hpp"
+// #include "LinkedList.hpp"
 
 using namespace std;
 
 void insert_student(LinkedList<Student> *);
 void search_student(LinkedList<Student> *);
 void delete_student(LinkedList<Student> *);
+void add_course_to_student(LinkedList<Student>*, LinkedList<Course>*);
+void search_course(LinkedList<Course> *);
+void append_course(LinkedList<Course> *cl, string name, string location);
 void choice_help();
 
 int main()
 {
   // TO DO: Insert your code to display a menu for user to select to add/delete/view Student and course information.
   LinkedList<Student> studentList;
+  LinkedList<Course> courseList;
 
   int choice = -1;
 
@@ -49,6 +52,7 @@ int main()
         cout << "Total students: " << studentList.getLength() << endl;
         break;
       case 6:
+        add_course_to_student(&studentList, &courseList);
         break;
       case 7:
         break;
@@ -119,6 +123,59 @@ void delete_student(LinkedList<Student> *studentList) {
   }
   cout << "Student with ID " << id << " not found." << endl;
 }
+
+void add_course_to_student(LinkedList<Student>* sl, LinkedList<Course>* cl) {
+  int i = 0;
+  int j = 0;
+  int id = 0;
+  string course_name = "";
+  string course_location = "";
+  int student_found = 0;
+  int course_found = 0;
+  Student s; 
+
+  cout << "Enter ID: ";
+  cin >> id;
+
+  for (i = 0; i < sl->getLength(); i++) {
+    s = sl->getElement(i);
+    if (s.getId() == id) {
+      student_found = 1;
+      break;
+    }
+  }
+
+  if (student_found == 1) {
+    cout << "Enter Course Name: ";
+    std::getline(std::cin >> std::ws, course_name);
+    cout << "Enter location: ";
+    cin >> course_location;
+
+    for (j = 0; j < cl->getLength(); j++) {
+      Course c = cl->getElement(j);
+      if ( course_name == c.getName() ) {
+        course_found = 1;
+        break;
+      }
+    }
+    if (course_found == 0) {
+      append_course(cl, course_name, course_location);
+    }
+    s.addCourse(Course(course_name, course_location));
+    sl->replace(i, s);
+  }
+  else {
+      cout << "Student with ID " << id << " not found." << endl;
+  }
+
+}
+
+void append_course(LinkedList<Course> *cl, string name, string location) {
+  Course c = Course(name, location);
+  (*cl).append(c);
+  cout << *cl << endl;
+}
+
 void choice_help() {
     cout << "1. Insert Student" << endl;
     cout << "2. Delete Student" << endl;

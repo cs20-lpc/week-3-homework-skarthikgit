@@ -24,6 +24,12 @@ class LinkedList : public List<T> {
         // default constructor
         LinkedList();
 
+        // copy constructor
+        LinkedList(const LinkedList<T>& other);
+
+        // copy assignment
+        LinkedList<T>& operator=(const LinkedList<T>& other);
+
         // destructor
         virtual ~LinkedList();
 
